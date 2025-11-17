@@ -1,11 +1,18 @@
-import React from 'react';
+import { useState } from "react";
 
-function Signup(props) {
-    return (
-        <div>
-            signup
-        </div>
-    );
+
+function Signup() {
+    const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	return(
+		<div className="flex flex-col">
+        <input type="name" placeholder="name" value={name} onChange={(e) => setName(e.target.value)}/>
+		<input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+		<input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+
+		</div>
+	)
 }
 
 export default Signup;
