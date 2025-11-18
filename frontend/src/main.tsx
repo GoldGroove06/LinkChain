@@ -8,12 +8,17 @@ import Login from './pages/Login.tsx'
 import Signup from './pages/Signup.tsx'
 import Dashboard from './pages/Dashboard.tsx'
 import Automation from './pages/Automation.tsx'
+import Workspace from './pages/Workspace.tsx'
 
 const route = createBrowserRouter([
     {
       path: "/",
       element: <App />,
 
+    },
+    {
+      path: "/workspace",
+      element: <Workspace />,
     },
     {
       path: "/login",
