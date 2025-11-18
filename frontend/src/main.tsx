@@ -17,8 +17,12 @@ const route = createBrowserRouter([
 
     },
     {
-      path: "/workspace",
+      path: "/workspace/:id",
       element: <Workspace />,
+    },
+    {
+          path: "workspace/:id/automation/:id",
+          element: <Automation />,
     },
     {
       path: "/login",
@@ -31,10 +35,6 @@ const route = createBrowserRouter([
     {
       path: "/dashboard",
       element: <Dashboard />,
-    },
-    {
-      path: "/automation",
-      element: <Automation />,
     },
 
 ])
