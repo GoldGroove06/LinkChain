@@ -9,6 +9,7 @@ import Signup from './pages/Signup.tsx'
 import Dashboard from './pages/Dashboard.tsx'
 import Automation from './pages/Automation.tsx'
 import Workspace from './pages/Workspace.tsx'
+import AuthChecker from './components/AuthChecker';
 
 const route = createBrowserRouter([
     {
@@ -18,11 +19,18 @@ const route = createBrowserRouter([
     },
     {
       path: "/workspace/:id",
-      element: <Workspace />,
+      element: 
+      <AuthChecker>
+      <Workspace />
+      </AuthChecker>,
     },
     {
           path: "workspace/:id/automation/:id",
-          element: <Automation />,
+          element: 
+          <AuthChecker>
+            <Automation />
+          </AuthChecker>
+          ,
     },
     {
       path: "/login",
@@ -34,7 +42,11 @@ const route = createBrowserRouter([
     },
     {
       path: "/dashboard",
-      element: <Dashboard />,
+      element: 
+      <AuthChecker>
+      <Dashboard />
+      </AuthChecker>
+      ,
     },
 
 ])
