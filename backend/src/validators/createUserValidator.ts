@@ -1,7 +1,6 @@
 import { body } from "express-validator";
-import mongoose from "mongoose";
-import User from "../models/user.js";
 import connectMongo from "../lib/connectMongo";
+import { User } from "../models/user";
 
 const emailCheck = () => {
   return body("email")

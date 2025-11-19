@@ -1,16 +1,17 @@
-import mongoose from "mongoose";
+import { Schema, model, models, InferSchemaType, Model } from "mongoose";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     name: { type: String, required: true },
-    username: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }, // hashed
+    username: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true }
   },
   { timestamps: true }
 );
 
-// Prevent model overwrite on hot reload
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+// Infer TypeScript type from schema
+export type IUser = InferSchemaType<typeof userSchema>;
 
-export default User;
+export const User: Model<IUser> =
+  (models.User as Model<IUser>) || model<IUser>("User", userSchema);

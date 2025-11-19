@@ -1,15 +1,12 @@
-import { Router } from "express"
-import { getSignin, postSignin,  getSignup, postSignup } from "../controllers/authController"
-import  emailCheck  from "../validators/createUserValidator"
+import { Router } from "express";
+import { getSignin, getSignup,  postSignin, postSignup } from "../controllers/authController";
+import emailCheck from "../validators/createUserValidator";
 
+const authRoute = Router();
+authRoute.get("/signin", getSignin);
+authRoute.post("/signin", postSignin);
 
-const authRoute = Router()
+authRoute.get("/signup", getSignup);
+authRoute.post("/signup", emailCheck(), postSignup);
 
-authRoute.get("/signin", getSignin)
-authRoute.post("/signin", postSignin)
-
-
-authRoute.get("/signup", getSignup)
-authRoute.post("/signup", emailCheck(), postSignup)
-
-export default authRoute
+export default authRoute;
