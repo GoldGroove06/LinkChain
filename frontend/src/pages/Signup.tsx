@@ -123,7 +123,7 @@ function Signup() {
 
                         <div className="text-center text-gray-300">
                             Already have an account?
-                            <a href="/signin" className="text-yellow-300 hover:text-yellow-200 ml-1 font-medium">
+                            <a href="/login" className="text-yellow-300 hover:text-yellow-200 ml-1 font-medium">
                                 Sign in
                             </a>
                         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Navbar(props) {
+function Navbar() {
     async function logout() {
         const response = await fetch('http://localhost:3000/log-out', {
             method: 'GET',

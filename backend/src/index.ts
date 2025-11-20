@@ -4,6 +4,8 @@ import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import authRoute from "./routes/authRoute";
+import workspaceRoute from "./routes/workspaceRoute";
+import automationRoute from "./routes/automationRoute";
 
 const secret = process.env.JWT_SECRET ?? "a santa at nasa";
 const app = express();
@@ -51,6 +53,9 @@ app.use("/auth-check", authenticateToken, (_req: Request, res: Response) => {
 });
 
 app.use("/auth", authRoute);
+app.use("/workspace", authenticateToken, workspaceRoute);
+app.use("/automation", authenticateToken, automationRoute);
+
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

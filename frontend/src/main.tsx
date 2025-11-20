@@ -51,10 +51,10 @@ const route = createBrowserRouter([
 
 ])
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+
     <>
     <Navbar/>
     <RouterProvider router={route} />
     </>
-  </StrictMode>,
+,
 )
