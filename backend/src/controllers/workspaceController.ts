@@ -6,7 +6,7 @@ import { Request, Response } from "express";
 export async function getWorkspace(req:Request,res:Response) {
     console.log(req.user);
     const { id, email } = req.user as { id: string , email: string };
-    connectMongo();
+    await connectMongo();
     const user = await User.findOne({ email }).exec();
     const workspace = await Workspace.find({ parentUser: user?._id }).exec();
     console.log(workspace);
@@ -15,7 +15,7 @@ export async function getWorkspace(req:Request,res:Response) {
 
 export async function postWorkspace(req:Request,res:Response) {
     const { id, email } = req.user as { id: string , email: string };
-    connectMongo();
+    await connectMongo();
     console.log("workspace Post")
     const user = await User.findOne({ email }).exec();
 
@@ -29,4 +29,12 @@ export async function postWorkspace(req:Request,res:Response) {
     
     console.log("workspace created")
     return res.status(200).json({ message: "Workspace created" });
+}
+
+
+export async function deleteWorkspace(req:Request, res:Response) {
+    console.log(req.params.id);
+    await connectMongo();
+    const workspace = await Workspace.findByIdAndDelete(req.params.id).exec();
+    return res.status(200).json({ message: "Workspace deleted" });
 }

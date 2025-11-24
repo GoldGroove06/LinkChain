@@ -5,9 +5,9 @@ import Cards from "../components/Cards";
 function Dashboard() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
+	const [worspace, setWorkspace] = useState([])
 
-	useEffect(() => {
-    async function fetchWorkspace() {
+	async function fetchWorkspace() {
       try {
         const res = await fetch('http://localhost:3000/workspace/get', 
 			{
@@ -20,7 +20,7 @@ function Dashboard() {
 
         if (res.ok) {
 			const data = await res.json();
-          console.log(data)
+			setWorkspace(data.workspace)
 		}
         
       } catch (error) {
@@ -28,6 +28,7 @@ function Dashboard() {
       }
     }
 
+	useEffect(() => {
     fetchWorkspace();
   }, []);
 
@@ -40,11 +41,26 @@ function Dashboard() {
 		body: JSON.stringify({ name, description }),
 	  });
 	  const data = await response.json();
+	  fetchWorkspace()
 	  console.log(data);
 	} catch (e) {
 	  console.log(e);
 	}
   };
+
+  const handleDeleteWorkspace = async (id: string) => {
+	try {
+	  const response = await fetch(`http://localhost:3000/workspace/delete/${id}`, {
+		method: 'DELETE',
+		credentials: 'include',
+	  });
+	  const data = await response.json();
+	  fetchWorkspace()
+	  console.log(data);
+	} catch (e) {
+	  console.log(e);
+	}
+  }
 
 	return(
 		<div>
@@ -58,8 +74,10 @@ function Dashboard() {
 			<button onClick={handleCreateWorkspace}>Create</button>
 		</div>
 		<div className="flex flex-row gap-4">
-			<Cards name="Name" description="Description"/>
-			<Cards name="Name2" description="Description2"/>
+			{worspace.map((workspace) => (
+				<Cards name={workspace.name} description={workspace.description} onDelete={() => handleDeleteWorkspace(workspace._id)} location={'/workspace/'+ workspace._id}/>
+
+			))}
 
 		</div>
 		</div>
