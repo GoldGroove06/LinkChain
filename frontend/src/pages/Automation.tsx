@@ -13,22 +13,23 @@ import { useParams } from "react-router";
 import '@xyflow/react/dist/style.css';
 
 import { Sidebar } from '../components/AutomationSidebar';
+import { normalize } from 'path';
 
 let initialNodesStructure = [
   {
-    id: '1',
+    id: "dndnode_0",
     type: 'input',
     data: { label: 'input node' },
     position: { x: 250, y: 600},
   },
   {
-    id: '2',
+    id: "dndnode_1",
     type: 'input',
     data: { label: 'input node' },
     position: { x: 250, y: 400 },
   },
   {
-    id: '3',
+    id: "dndnode_2",
     type: 'input',
     data: { label: 'input node' },
     position: { x: 250, y: 200 },
@@ -37,7 +38,7 @@ let initialNodesStructure = [
 
 function Automation() {
   const [fetchedData, setFetchedData] = useState({})
-  const [nodes, _, onNodesChange] = useNodesState(initialNodesStructure);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const {id} = useParams();
 
@@ -45,6 +46,10 @@ function Automation() {
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
     [],
   );
+
+  // useEffect(() => {
+  //   setNodes(initialNodesStructure);
+  // },[])
 
   useEffect(() => {
       const fetchTree = async () => {
@@ -59,12 +64,14 @@ function Automation() {
       setFetchedData(data.automation)
       if(data.automation.edges.length > 0){
         console.log(data.automation.edges,"from fetch")
-          // setEdges(data.automation.edges)
+          setEdges(data.automation.edges)
       }
       if(data.automation.nodes.length > 0){
         console.log(data.automation.nodes,"from fetch")
         const fetchedNodes = data.automation.nodes
-        // initialNodesStructure = fetchedNodes
+      // console.log(initialNodesStructure)
+      setNodes(fetchedNodes)
+
       
       }
       
@@ -93,7 +100,7 @@ function Automation() {
         
         if (fetchedData.nodes != nodes && fetchedData.edges != edges){
           console.log("update")
-          //  updateBackend()
+           updateBackend()
         }
       }
        

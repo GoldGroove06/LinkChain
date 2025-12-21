@@ -5,8 +5,7 @@ import { cn } from '../utils/utils';
 
 // This is a simple ID generator for the nodes.
 // You can customize this to use your own ID generation logic.
-let id = 0;
-const getId = () => `dndnode_${id++}`;
+const getId = () => crypto.randomUUID();
 
 interface DraggableNodeProps {
   className?: string;
