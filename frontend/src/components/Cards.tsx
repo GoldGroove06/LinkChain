@@ -7,7 +7,7 @@ function Cards({name, description, onDelete, location}: {name:string, descriptio
         <div className='h-30 w-40 border-3 border-primary'>
             <h3>{name}</h3>
             <span>{description}</span>
-            <button onClick={ onDelete}>Delete</button>
+            <button onClick={onDelete}>Delete</button>
 
         </div>
         </Link>

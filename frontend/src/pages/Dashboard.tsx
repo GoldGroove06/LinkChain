@@ -5,7 +5,7 @@ import Cards from "../components/Cards";
 function Dashboard() {
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
-	const [worspace, setWorkspace] = useState([])
+	const [worspace, setWorkspace] = useState<any>([])
 
 	async function fetchWorkspace() {
       try {
@@ -74,7 +74,7 @@ function Dashboard() {
 			<button onClick={handleCreateWorkspace}>Create</button>
 		</div>
 		<div className="flex flex-row gap-4">
-			{worspace.map((workspace) => (
+			{worspace.map((workspace: any) => (
 				<Cards name={workspace.name} description={workspace.description} onDelete={() => handleDeleteWorkspace(workspace._id)} location={'/workspace/'+ workspace._id}/>
 
 			))}

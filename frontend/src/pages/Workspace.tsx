@@ -1,13 +1,15 @@
+import { useParams } from "react-router";
 import Cards from "../components/Cards";
 import { useEffect, useState } from "react";
 
 function Workspace() {
+	const {id} = useParams()
 	const [automation, setAutomation] = useState([]);
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 
 	async function getAutomation() {
-		const response = await fetch('http://localhost:3000/automation/get', {
+		const response = await fetch('http://localhost:3000/automation/get/'+id , {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
@@ -44,7 +46,7 @@ function Workspace() {
 				method: 'POST',
 				credentials: 'include',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ name, description }),
+				body: JSON.stringify({ name, description, id }),
 			});
 			const data = await response.json();
 			getAutomation();
@@ -64,10 +66,11 @@ function Workspace() {
 		<div>
 			<input type="text" placeholder="Automation Name" value={name} onChange={(e) => setName(e.target.value)}/>
 			<input type="text" placeholder="automation description" value={description} onChange={(e) => setDescription(e.target.value)}/>
+			<button onClick={handleCreateAutomation}>create</button>
 		</div>
 		<div className="flex flex-row gap-4">
 			{automation.map((automation) => (
-				<Cards name={automation.name} description={automation.description} onDelete={() => handleAutomationDelete(automation._id)} location={"automation" + automation._id}/>
+				<Cards name={automation.name} description={automation.description} onDelete={() => handleAutomationDelete(automation._id)} location={"automation/" + automation._id}/>
 			))}
 
 		</div>
