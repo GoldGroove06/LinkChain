@@ -79,14 +79,14 @@ export function Sidebar() {
       <div className="description">
         You can drag these nodes to the pane to create new nodes.
       </div>
-      <DraggableNode className="input" nodeType="input" onDrop={handleNodeDrop}>
-        Input Node
+      <DraggableNode className="manualTrigger" nodeType="manualTrigger" onDrop={handleNodeDrop}>
+        manualTrigger
       </DraggableNode>
-      <DraggableNode className="default" nodeType="default" onDrop={handleNodeDrop}>
-        Default Node
+      <DraggableNode className="webhook" nodeType="webhook" onDrop={handleNodeDrop}>
+        Webhook
       </DraggableNode>
-      <DraggableNode className="output" nodeType="output" onDrop={handleNodeDrop}>
-        Output Node
+      <DraggableNode className="cron" nodeType="cron" onDrop={handleNodeDrop}>
+        Cron
       </DraggableNode>
     </aside>
   );

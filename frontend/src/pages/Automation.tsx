@@ -13,28 +13,15 @@ import { useParams } from "react-router";
 import '@xyflow/react/dist/style.css';
 
 import { Sidebar } from '../components/AutomationSidebar';
-import { normalize } from 'path';
+import ManualTrigger from '../components/nodes/ManualTrigger';
+import Webhook from '../components/nodes/Webhook';
+import Cron from '../components/nodes/Cron';
 
-let initialNodesStructure = [
-  {
-    id: "dndnode_0",
-    type: 'input',
-    data: { label: 'input node' },
-    position: { x: 250, y: 600},
-  },
-  {
-    id: "dndnode_1",
-    type: 'input',
-    data: { label: 'input node' },
-    position: { x: 250, y: 400 },
-  },
-  {
-    id: "dndnode_2",
-    type: 'input',
-    data: { label: 'input node' },
-    position: { x: 250, y: 200 },
-  },
-];
+const nodeType = {
+  manualTrigger: ManualTrigger,
+  webhook: Webhook,
+  cron: Cron
+}
 
 function Automation() {
   const [fetchedData, setFetchedData] = useState({})
@@ -47,9 +34,6 @@ function Automation() {
     [],
   );
 
-  // useEffect(() => {
-  //   setNodes(initialNodesStructure);
-  // },[])
 
   useEffect(() => {
       const fetchTree = async () => {
@@ -95,16 +79,16 @@ function Automation() {
   
   useEffect(() => {
       const delayInput = setTimeout(() => {
-        if (fetchedData){
+         const changed =
+      JSON.stringify(nodes) !== JSON.stringify(fetchedData.nodes) ||
+      JSON.stringify(edges) !== JSON.stringify(fetchedData.edges);
 
-        
-        if (fetchedData.nodes != nodes && fetchedData.edges != edges){
-          console.log("update")
-           updateBackend()
-        }
-      }
+    if (changed) {
+      console.log("changed detected updated the backend")
+      updateBackend();
+    }
        
-      },2000)
+      },1000)
       return () => clearTimeout(delayInput)
   },[nodes,edges])
   console.log("nodes:",nodes,"edges:", edges)
@@ -115,6 +99,7 @@ function Automation() {
         <ReactFlow
           nodes={nodes}
           edges={edges}
+          nodeTypes={nodeType}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
