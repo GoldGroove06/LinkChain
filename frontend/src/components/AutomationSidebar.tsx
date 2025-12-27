@@ -85,6 +85,15 @@ export function Sidebar() {
       <DraggableNode className="webhook" nodeType="webhook" onDrop={handleNodeDrop}>
         Webhook
       </DraggableNode>
+      <DraggableNode className="ifLoop" nodeType="ifLoop" onDrop={handleNodeDrop}>
+        if Loop
+      </DraggableNode>
+      <DraggableNode className="setData" nodeType="setData" onDrop={handleNodeDrop}>
+        Set Data
+      </DraggableNode>
+      <DraggableNode className="console" nodeType="console" onDrop={handleNodeDrop}>
+        Console
+      </DraggableNode>
       <DraggableNode className="cron" nodeType="cron" onDrop={handleNodeDrop}>
         Cron
       </DraggableNode>

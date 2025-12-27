@@ -55,7 +55,7 @@ export async function postSignin(
 
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 3_600_000,
+      maxAge: 3600000,
       sameSite: "lax",
       secure: false,
     });

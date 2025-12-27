@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, createContext } from 'react';
 import {
   Background,
   Connection,
@@ -16,12 +16,23 @@ import { Sidebar } from '../components/AutomationSidebar';
 import ManualTrigger from '../components/nodes/ManualTrigger';
 import Webhook from '../components/nodes/Webhook';
 import Cron from '../components/nodes/Cron';
+import SetData from '../components/nodes/SetData';
+import IfLoop from '../components/nodes/IfLoop';
+import Console from '../components/nodes/Console';
 
 const nodeType = {
   manualTrigger: ManualTrigger,
   webhook: Webhook,
-  cron: Cron
+  cron: Cron,
+  setData: SetData,
+  ifLoop: IfLoop,
+  console: Console
 }
+
+interface AutomationContextType {
+  updateNodeData: ( nodeId: string, updateData: { [key: string]: any }) => void
+}
+export const AutomationContext = createContext<AutomationContextType>({} as AutomationContextType)
 
 function Automation() {
   const [fetchedData, setFetchedData] = useState({})
@@ -93,7 +104,26 @@ function Automation() {
   },[nodes,edges])
   console.log("nodes:",nodes,"edges:", edges)
 
+  function updateNodeData(nodeId: string, updateData: any) {
+    setNodes((nds:any) => 
+     nds.map((node: any) => {
+       if (node.id === nodeId){
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            ...updateData
+          }
+        }
+       }
+       return node;
+     }) 
+     
+    )
+  }
+
   return (
+    <AutomationContext.Provider value={{ updateNodeData }}>
     <div className="flex flex-row h-screen">
       <div className="reactflow-wrapper w-[80%]">
         <ReactFlow
@@ -111,6 +141,7 @@ function Automation() {
       </div>
       <Sidebar />
     </div>
+    </AutomationContext.Provider>
   );
 }
 
