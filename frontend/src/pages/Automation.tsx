@@ -30,7 +30,8 @@ const nodeType = {
 }
 
 interface AutomationContextType {
-  updateNodeData: ( nodeId: string, updateData: { [key: string]: any }) => void
+  updateNodeData: ( nodeId: string, updateData: { [key: string]: any }) => void;
+  runAutomation: (nodeId: string) => void
 }
 export const AutomationContext = createContext<AutomationContextType>({} as AutomationContextType)
 
@@ -122,8 +123,23 @@ function Automation() {
     )
   }
 
+  async function runAutomation(nodeId:string) {
+    const response = await fetch(`http://localhost:3000/automation/run/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({ nodeId })
+
+    })
+    const data = await response.json()
+    console.log(data)
+
+  }
+
   return (
-    <AutomationContext.Provider value={{ updateNodeData }}>
+    <AutomationContext.Provider value={{ updateNodeData, runAutomation }}>
     <div className="flex flex-row h-screen">
       <div className="reactflow-wrapper w-[80%]">
         <ReactFlow

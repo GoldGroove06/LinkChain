@@ -6,7 +6,6 @@ function IfLoop() {
     const { updateNodeData } = React.useContext(AutomationContext);
     const nodeId = useNodeId();
     const nodeData = useNodesData(`${nodeId}`);
-    console.log(nodeData)
     const [condition, setCondition] = React.useState(nodeData?.data.condition);
 
     useEffect(() => {
