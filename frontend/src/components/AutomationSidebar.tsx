@@ -14,7 +14,7 @@ interface DraggableNodeProps {
   onDrop: (nodeType: string, position: XYPosition) => void;
 }
 
-const nodesArray=['manualTrigger', 'webhook', 'cron', 'setData', 'ifCondition', 'console', 'errorCatch', 'httpRequest', 'filter', 'function', 'loop', 'function', 'respond', 'stop', 'delay'];
+const nodesArray=['manualTrigger', 'webhook', 'cron', 'setData', 'ifCondition', 'console', 'errorCatch', 'httpRequest', 'filter', 'function', 'loop', 'respond', 'stop', 'delay'];
 
 
 function DraggableNode({ className, children, nodeType, onDrop }: DraggableNodeProps) {

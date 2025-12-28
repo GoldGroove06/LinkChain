@@ -54,15 +54,15 @@ export async function runAutomation(req:Request,res:Response) {
 
 
     //v0 of automation engine
-    const startEdge = automation.edges.find((edge) => edge.target === startNodeId);
+    const startEdge = automation.edges.find((edge) => edge.source === startNodeId);
 
 
     let nextNode: any;
     let currentEdge = startEdge
     let gobalState: any = {};
     for(let i = 0; i < automation.nodes.length - 1 ; i++) {
-        nextNode = automation.nodes.find((node) => node.id === currentEdge.source);
-        currentEdge = automation.edges.find((edge) => edge.target === nextNode.id);
+        nextNode = automation.nodes.find((node) => node.id === currentEdge.target);
+        currentEdge = automation.edges.find((edge) => edge.source === nextNode.id);
         console.log(nextNode, i)
         switch(nextNode.type) {
             case "setData":
