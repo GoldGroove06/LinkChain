@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Position, Handle, useNodeId, useNodesData } from '@xyflow/react';
 import { AutomationContext } from '../../pages/Automation';
 
-function IfLoop() {
+function IfCondition() {
     const { updateNodeData } = React.useContext(AutomationContext);
     const nodeId = useNodeId();
     const nodeData = useNodesData(`${nodeId}`);
@@ -23,10 +23,10 @@ function IfLoop() {
             if Loop
             Condition: <input type='text' value={condition} onChange={(e) => setCondition(e.target.value)}/>
 
-            <Handle type="source" position={Position.Top} id="a" />
-            <Handle type="target" position={Position.Bottom} id="b"/>
+            <Handle type="target" position={Position.Top} id="a" />
+            <Handle type="source" position={Position.Bottom} id="b"/>
         </div>
     );
 }
 
-export default IfLoop;
+export default IfCondition;

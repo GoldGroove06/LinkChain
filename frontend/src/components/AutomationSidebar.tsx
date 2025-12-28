@@ -14,6 +14,9 @@ interface DraggableNodeProps {
   onDrop: (nodeType: string, position: XYPosition) => void;
 }
 
+const nodesArray=['manualTrigger', 'webhook', 'cron', 'setData', 'ifCondition', 'console', 'errorCatch', 'httpRequest', 'filter', 'function', 'loop', 'function', 'respond', 'stop', 'delay'];
+
+
 function DraggableNode({ className, children, nodeType, onDrop }: DraggableNodeProps) {
   const draggableRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<XYPosition>({ x: 0, y: 0 });
@@ -79,24 +82,12 @@ export function Sidebar() {
       <div className="description">
         You can drag these nodes to the pane to create new nodes.
       </div>
-      <DraggableNode className="manualTrigger" nodeType="manualTrigger" onDrop={handleNodeDrop}>
-        manualTrigger
-      </DraggableNode>
-      <DraggableNode className="webhook" nodeType="webhook" onDrop={handleNodeDrop}>
-        Webhook
-      </DraggableNode>
-      <DraggableNode className="ifLoop" nodeType="ifLoop" onDrop={handleNodeDrop}>
-        if Loop
-      </DraggableNode>
-      <DraggableNode className="setData" nodeType="setData" onDrop={handleNodeDrop}>
-        Set Data
-      </DraggableNode>
-      <DraggableNode className="console" nodeType="console" onDrop={handleNodeDrop}>
-        Console
-      </DraggableNode>
-      <DraggableNode className="cron" nodeType="cron" onDrop={handleNodeDrop}>
-        Cron
-      </DraggableNode>
+
+      {nodesArray.map((nodeType) => (
+        <DraggableNode className={nodeType} nodeType={nodeType} key={nodeType} onDrop={handleNodeDrop}>
+          {nodeType}
+        </DraggableNode>
+      ))}
     </aside>
   );
 }

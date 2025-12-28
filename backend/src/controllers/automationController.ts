@@ -2,7 +2,6 @@ import { Workspace } from "../models/workspace";
 import connectMongo from "../lib/connectMongo";
 import { Automation } from "../models/automation";
 import { Request, Response } from "express";
-import { start } from "repl";
 
 export async function getAutomation(req:Request,res:Response) {
     await connectMongo();

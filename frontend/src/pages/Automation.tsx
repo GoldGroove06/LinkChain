@@ -17,16 +17,36 @@ import ManualTrigger from '../components/nodes/ManualTrigger';
 import Webhook from '../components/nodes/Webhook';
 import Cron from '../components/nodes/Cron';
 import SetData from '../components/nodes/SetData';
-import IfLoop from '../components/nodes/IfLoop';
 import Console from '../components/nodes/Console';
+import JsonParse from '../components/nodes/JsonParse';
+import Loop from '../components/nodes/Loop';
+import Stop from '../components/nodes/Stop';
+import Respond from '../components/nodes/Respond';
+import Merge from '../components/nodes/Merge';
+import HttpRequest from '../components/nodes/HttpRequest';
+import Function from '../components/nodes/Function';
+import Filter from '../components/nodes/Filter';
+import ErrorCatch from '../components/nodes/ErrorCatch';
+import Delay from '../components/nodes/Delay';
+import IfCondition from '../components/nodes/IfCondition';
 
 const nodeType = {
   manualTrigger: ManualTrigger,
   webhook: Webhook,
   cron: Cron,
   setData: SetData,
-  ifLoop: IfLoop,
-  console: Console
+  ifCondition: IfCondition,
+  console: Console,
+  jsonParse: JsonParse,
+  loop: Loop,
+  stop: Stop,
+  respond: Respond,
+  merge: Merge,
+  httpRequest: HttpRequest,
+  function: Function,
+  filter: Filter,
+  errorCatch: ErrorCatch,
+  delay: Delay,
 }
 
 interface AutomationContextType {
