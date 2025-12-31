@@ -1,25 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Position, Handle, useNodeId, useNodesData } from '@xyflow/react';
-import { AutomationContext } from '../../pages/Automation';
 import { Dialog } from '../Dialog';
+import UpdateNodeData from '../UpdateNodeData';
 
 function IfCondition() {
-    const { updateNodeData } = React.useContext(AutomationContext);
     const nodeId = useNodeId();
     const nodeData = useNodesData(`${nodeId}`);
     const [dataStore, setDataStore] = useState<[{ value1: string, value2: string}]>([{ value1: "", value2: ""}]);
     const [compareType, setCompareType] = React.useState<"and" | "or">("and");
 
-    // useEffect(() => {
-    //     console.log("useEffect called", nodeId)
-    //     const delayInput = setTimeout(() => {
-    //         if (nodeId && condition) {
-    //             updateNodeData(nodeId, { condition: condition })
-    //         }
-    //     }, 1000);
-
-    //     return () => clearTimeout(delayInput);
-    // }, [condition]);
+    UpdateNodeData(nodeId, { compareType, ...dataStore });
 
     function updateDataStore(index: number, toUpdate: string, toUpdateValue: string | number | boolean) {
         const updatedDataStore = [...dataStore];
