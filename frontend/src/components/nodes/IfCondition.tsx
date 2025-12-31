@@ -1,30 +1,95 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Position, Handle, useNodeId, useNodesData } from '@xyflow/react';
 import { AutomationContext } from '../../pages/Automation';
+import { Dialog } from '../Dialog';
 
 function IfCondition() {
     const { updateNodeData } = React.useContext(AutomationContext);
     const nodeId = useNodeId();
     const nodeData = useNodesData(`${nodeId}`);
-    const [condition, setCondition] = React.useState(nodeData?.data.condition);
+    const [dataStore, setDataStore] = useState<[{ value1: string, value2: string}]>([{ value1: "", value2: ""}]);
+    const [compareType, setCompareType] = React.useState<"and" | "or">("and");
 
-    useEffect(() => {
-        console.log("useEffect called", nodeId)
-        const delayInput = setTimeout(() => {
-            if (nodeId && condition){
-            updateNodeData(nodeId, { condition: condition})
-            }
-        }, 1000);
+    // useEffect(() => {
+    //     console.log("useEffect called", nodeId)
+    //     const delayInput = setTimeout(() => {
+    //         if (nodeId && condition) {
+    //             updateNodeData(nodeId, { condition: condition })
+    //         }
+    //     }, 1000);
 
-        return () => clearTimeout(delayInput);
-    }, [condition]);
+    //     return () => clearTimeout(delayInput);
+    // }, [condition]);
+
+    function updateDataStore(index: number, toUpdate: string, toUpdateValue: string | number | boolean) {
+        const updatedDataStore = [...dataStore];
+        updatedDataStore[index][toUpdate] = toUpdateValue;
+        setDataStore(updatedDataStore);
+    }
+
+    console.log(dataStore)
     return (
         <div className='p-2 px-16 bg-white border border-black rounded-sm'>
-            if Loop
-            Condition: <input type='text' value={condition} onChange={(e) => setCondition(e.target.value)}/>
+            if
+            <Dialog.Root>
+                <Dialog.Trigger className="px-4 py-2 bg-blue-600 text-white rounded">
+                    Edit
+                </Dialog.Trigger>
+
+                <Dialog.Overlay />
+
+                <Dialog.Content>
+                    <Dialog.Header>
+                        <Dialog.Title>Set Data</Dialog.Title>
+                        <Dialog.Description>
+                            <div>
+                                {dataStore.map((data, index) => (
+                                    <div key={index}>
+                                       value 1 <input 
+                                            type="text"
+                                            value={data.value1}
+                                            onChange={(e) => updateDataStore(index, "value1", e.target.value)}
+                                        />
+                                        
+                                        value 2<input 
+                                            type="text"
+                                            value={data.value2}
+                                            onChange={(e) => updateDataStore(index, "value2", e.target.value)}
+                                        />
+
+                                        {index == 0 ?
+                                        (<select 
+                                            value={compareType}
+                                            onChange={(e) => setCompareType(e.target.value)}
+                                        >
+                                            <option value="and">AND</option>
+                                            <option value="or">OR</option>
+                                        </select>)
+                                        :
+                                        compareType
+                                        }
+                                    </div>
+                                ))}
+                                <button onClick={() => setDataStore([...dataStore, { name: "", value: "", type: "" }])}>Add + </button>
+
+                            </div>
+                        </Dialog.Description>
+                    </Dialog.Header>
+
+                    <Dialog.Footer>
+                        <Dialog.Close className="px-3 py-1 rounded bg-zinc-700">
+                            Cancel
+                        </Dialog.Close>
+                        <button className="px-3 py-1 rounded bg-red-600">
+                            Delete
+                        </button>
+                    </Dialog.Footer>
+                </Dialog.Content>
+            </Dialog.Root>
+
 
             <Handle type="target" position={Position.Top} id="a" />
-            <Handle type="source" position={Position.Bottom} id="b"/>
+            <Handle type="source" position={Position.Bottom} id="b" />
         </div>
     );
 }
