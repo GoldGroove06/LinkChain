@@ -2,6 +2,8 @@ import { Workspace } from "../models/workspace";
 import connectMongo from "../lib/connectMongo";
 import { Automation } from "../models/automation";
 import { Request, Response } from "express";
+import setData from "./nodes/setData";
+import ifCondition from "./nodes/ifCondition";
 
 export async function getAutomation(req:Request,res:Response) {
     await connectMongo();
@@ -52,9 +54,39 @@ export async function runAutomation(req:Request,res:Response) {
     const automation = await Automation.findById(id).exec();
 
 
-
+    console.log("automation tree fetch",automation.nodes, automation.edges);
     //v0 of automation engine
-    const startEdge = automation.edges.find((edge) => edge.source === startNodeId);
+    // const startEdge = automation.edges.find((edge) => edge.source === startNodeId);
+
+
+    // let nextNode: any;
+    // let currentEdge = startEdge
+    // let gobalState: any = {};
+    // for(let i = 0; i < automation.nodes.length - 1 ; i++) {
+    //     nextNode = automation.nodes.find((node) => node.id === currentEdge.target);
+    //     currentEdge = automation.edges.find((edge) => edge.source === nextNode.id);
+    //     console.log(nextNode, i)
+    //     switch(nextNode.type) {
+    //         case "setData":
+    //             // gobalState = {...gobalState, [nextNode.data.variable]: nextNode.data.variableValue}
+    //             break;
+    //         case "ifLoop":
+    //             if (!nextNode.data.condition) {
+    //                 break;
+    //             }
+    //             else {
+    //                 return res.status(200).json({ message: "Automation", consoleData: "false" });
+    //             }
+                
+    //         case "console":
+    //             return res.status(200).json({ message: "Automation", consoleData: "true" });
+    //     }
+        
+    // }
+    
+
+    //v1 of automation engine
+     const startEdge = automation.edges.find((edge) => edge.source === startNodeId);
 
 
     let nextNode: any;
@@ -64,24 +96,27 @@ export async function runAutomation(req:Request,res:Response) {
         nextNode = automation.nodes.find((node) => node.id === currentEdge.target);
         currentEdge = automation.edges.find((edge) => edge.source === nextNode.id);
         console.log(nextNode, i)
+        
         switch(nextNode.type) {
             case "setData":
-                gobalState = {...gobalState, [nextNode.data.variable]: nextNode.data.variableValue}
+                setData(gobalState, nextNode)
                 break;
-            case "ifLoop":
-                if (!nextNode.data.condition) {
+            case "ifCondition":
+                const { nextConditon } = ifCondition(gobalState, nextNode);
+                if (nextConditon === "true") {
                     break;
                 }
                 else {
-                    return res.status(200).json({ message: "Automation", consoleData: "false" });
+                    return res.status(200).json({ message: "Automation", consoleData: "false", gobalState });
                 }
                 
+                
             case "console":
-                return res.status(200).json({ message: "Automation", consoleData: "true" });
+                return res.status(200).json({ message: "Automation", consoleData: "true", gobalState });
         }
         
     }
-    
+
     
     return res.status(200).json({ message: "Automation", automation });
 }

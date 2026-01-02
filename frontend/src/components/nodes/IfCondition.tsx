@@ -2,7 +2,6 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { Position, Handle, useNodeId, useNodesData } from '@xyflow/react';
 import { Dialog } from '../Dialog';
 import UpdateNodeData from '../UpdateNodeData';
-import { data } from 'react-router';
 
 function IfCondition() {
     const nodeId = useNodeId();
