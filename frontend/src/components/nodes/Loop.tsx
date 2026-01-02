@@ -1,12 +1,14 @@
-import { Position, Handle, useNodeId } from '@xyflow/react';
+import { Position, Handle, useNodeId, useNodesData } from '@xyflow/react';
 import { Dialog } from '../Dialog';
 import { useState } from 'react';
 import UpdateNodeData from '../UpdateNodeData';
 
 function Loop() {
     const nodeId = useNodeId();
-    const [dataStore, setDataStore] = useState<{ noOfTimes: number }>({ noOfTimes: 0 });
+    const nodeData = useNodesData(`${nodeId}`);
+    const [dataStore, setDataStore] = useState<{ noOfTimes: number }>({ noOfTimes: nodeData.data.noOfTimes || 0 });
     UpdateNodeData(nodeId, dataStore);
+    console.log(nodeData)
     return (
         <div className='p-2 px-16 bg-white border border-black rounded-sm'>
             <Dialog.Root>
@@ -19,14 +21,13 @@ function Loop() {
                 <Dialog.Content>
                     <Dialog.Header>
                         <Dialog.Title>Set Data</Dialog.Title>
-                        <Dialog.Description>
-                            <div>
-                                how many times <input type='number' className='border' value={dataStore.noOfTimes} onChange={(e) => setDataStore({ noOfTimes: e.target.value })} /><br />
 
-
-                            </div>
-                        </Dialog.Description>
                     </Dialog.Header>
+                    <div>
+                        how many times <input type='number' className='border' value={dataStore.noOfTimes} onChange={(e) => setDataStore({ noOfTimes: e.target.value })} /><br />
+
+
+                    </div>
 
                     <Dialog.Footer>
                         <Dialog.Close className="px-3 py-1 rounded bg-zinc-700">

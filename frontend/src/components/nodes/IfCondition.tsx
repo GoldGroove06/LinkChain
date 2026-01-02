@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Position, Handle, useNodeId, useNodesData } from '@xyflow/react';
 import { Dialog } from '../Dialog';
 import UpdateNodeData from '../UpdateNodeData';
+import { data } from 'react-router';
 
 function IfCondition() {
     const nodeId = useNodeId();
     const nodeData = useNodesData(`${nodeId}`);
-    const [dataStore, setDataStore] = useState<[{ value1: string, value2: string}]>([{ value1: "", value2: ""}]);
-    const [compareType, setCompareType] = React.useState<"and" | "or">("and");
+    console.log("if condition", nodeData);
+    const [dataStore, setDataStore] = useState<[{ value1: string, value2: string }]>(nodeData?.data.dataStore ||[{ value1: "", value2: "" }]);
+    const [compareType, setCompareType] = React.useState<"and" | "or">(nodeData?.data.compareType || "and");
 
-    UpdateNodeData(nodeId, { compareType, ...dataStore });
+    // const send =  {dataStore, compareType};
+    UpdateNodeData(nodeId, useMemo(() => { return {dataStore, compareType}}, [dataStore, compareType]));
 
     function updateDataStore(index: number, toUpdate: string, toUpdateValue: string | number | boolean) {
         const updatedDataStore = [...dataStore];
@@ -17,7 +20,6 @@ function IfCondition() {
         setDataStore(updatedDataStore);
     }
 
-    console.log(dataStore)
     return (
         <div className='p-2 px-16 bg-white border border-black rounded-sm'>
             if
@@ -31,41 +33,38 @@ function IfCondition() {
                 <Dialog.Content>
                     <Dialog.Header>
                         <Dialog.Title>Set Data</Dialog.Title>
-                        <Dialog.Description>
-                            <div>
-                                {dataStore.map((data, index) => (
-                                    <div key={index}>
-                                       value 1 <input 
-                                            type="text"
-                                            value={data.value1}
-                                            onChange={(e) => updateDataStore(index, "value1", e.target.value)}
-                                        />
-                                        
-                                        value 2<input 
-                                            type="text"
-                                            value={data.value2}
-                                            onChange={(e) => updateDataStore(index, "value2", e.target.value)}
-                                        />
-
-                                        {index == 0 ?
-                                        (<select 
-                                            value={compareType}
-                                            onChange={(e) => setCompareType(e.target.value)}
-                                        >
-                                            <option value="and">AND</option>
-                                            <option value="or">OR</option>
-                                        </select>)
-                                        :
-                                        compareType
-                                        }
-                                    </div>
-                                ))}
-                                <button onClick={() => setDataStore([...dataStore, { name: "", value: "", type: "" }])}>Add + </button>
-
-                            </div>
-                        </Dialog.Description>
                     </Dialog.Header>
+                    <div>
+                        {dataStore.map((data, index) => (
+                            <div key={index}>
+                                value 1 <input
+                                    type="text"
+                                    value={data.value1}
+                                    onChange={(e) => updateDataStore(index, "value1", e.target.value)}
+                                />
 
+                                value 2<input
+                                    type="text"
+                                    value={data.value2}
+                                    onChange={(e) => updateDataStore(index, "value2", e.target.value)}
+                                />
+
+                                {index == 0 ?
+                                    (<select
+                                        value={compareType}
+                                        onChange={(e) => setCompareType(e.target.value)}
+                                    >
+                                        <option value="and">AND</option>
+                                        <option value="or">OR</option>
+                                    </select>)
+                                    :
+                                    compareType
+                                }
+                            </div>
+                        ))}
+                        <button onClick={() => setDataStore([...dataStore, { name: "", value: "", type: "" }])}>Add + </button>
+
+                    </div>
                     <Dialog.Footer>
                         <Dialog.Close className="px-3 py-1 rounded bg-zinc-700">
                             Cancel

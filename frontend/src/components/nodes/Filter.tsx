@@ -1,11 +1,12 @@
-import { Position, Handle, useNodeId } from '@xyflow/react';
+import { Position, Handle, useNodeId, useNodesData } from '@xyflow/react';
 import { useState } from 'react';
 import UpdateNodeData from '../UpdateNodeData';
 import { Dialog } from '../Dialog';
 
 function Filter() {
     const nodeId = useNodeId();
-    const [dataStore, setDataStore] = useState<{ filterCondition: string }>({ filterCondition: "" });
+    const nodeData = useNodesData(`${nodeId}`);
+    const [dataStore, setDataStore] = useState<{ filterCondition: string }>(nodeData?.data.dataStore || { filterCondition: "" });
     UpdateNodeData(nodeId, dataStore);
     return (
         <div className='p-2 px-16 bg-white border border-black rounded-sm'>
@@ -19,12 +20,11 @@ function Filter() {
                 <Dialog.Content>
                     <Dialog.Header>
                         <Dialog.Title>Set Data</Dialog.Title>
-                        <Dialog.Description>
-                            <div>
-                                Filter Condition: <input type='text' className='border bg-red-700 rounded-md p-2' value={dataStore.filterCondition} onChange={(e) => setDataStore({filterCondition:e.target.value})}/>
-                            </div>
-                        </Dialog.Description>
+
                     </Dialog.Header>
+                    <div>
+                        Filter Condition: <input type='text' className='border bg-red-700 rounded-md p-2' value={dataStore.filterCondition} onChange={(e) => setDataStore({ filterCondition: e.target.value })} />
+                    </div>
 
                     <Dialog.Footer>
                         <Dialog.Close className="px-3 py-1 rounded bg-zinc-700">

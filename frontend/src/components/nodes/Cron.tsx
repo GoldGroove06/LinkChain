@@ -1,10 +1,11 @@
-import { Position, Handle, useNodeId } from '@xyflow/react';
+import { Position, Handle, useNodeId, useNodesData } from '@xyflow/react';
 import { useState } from 'react';
 import { Dialog } from '../Dialog';
 import UpdateNodeData from '../UpdateNodeData';
 function Cron() {
     const nodeId = useNodeId();
-    const [dataStore, setDataStore] = useState<{ dateTime: string }>({ dateTime: "" });
+    const nodeData = useNodesData(`${nodeId}`);
+    const [dataStore, setDataStore] = useState<{ dateTime: string }>(nodeData?.data.dataStore || { dateTime: "" });
     UpdateNodeData(nodeId, dataStore);
     return (
         <div className='p-2 px-16 bg-white border border-black rounded-sm'>
@@ -18,13 +19,11 @@ function Cron() {
                 <Dialog.Content>
                     <Dialog.Header>
                         <Dialog.Title>Set Data</Dialog.Title>
-                        <Dialog.Description>
-                            <div>
-                                <input type='datetime-local' className='border bg-red-700 rounded-md p-2' value={dataStore.dateTime} onChange={(e) => setDataStore({ dateTime: e.target.value })} />
-
-                            </div>
-                        </Dialog.Description>
                     </Dialog.Header>
+                    <div>
+                        <input type='datetime-local' className='border bg-red-700 rounded-md p-2' value={dataStore.dateTime} onChange={(e) => setDataStore({ dateTime: e.target.value })} />
+
+                    </div>
 
                     <Dialog.Footer>
                         <Dialog.Close className="px-3 py-1 rounded bg-zinc-700">
