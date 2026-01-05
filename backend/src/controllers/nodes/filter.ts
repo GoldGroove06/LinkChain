@@ -1,4 +1,4 @@
-function filter(gobalState, nodeData) {
+function filter(gobalState, nodeData, automationObject) {
    let nextConditon;
 
    

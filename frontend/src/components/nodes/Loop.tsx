@@ -11,6 +11,7 @@ function Loop() {
     console.log(nodeData)
     return (
         <div className='p-2 px-16 bg-white border border-black rounded-sm'>
+            loop
             <Dialog.Root>
                 <Dialog.Trigger className="px-4 py-2 bg-blue-600 text-white rounded">
                     Edit
@@ -20,7 +21,7 @@ function Loop() {
 
                 <Dialog.Content>
                     <Dialog.Header>
-                        <Dialog.Title>Set Data</Dialog.Title>
+                        <Dialog.Title>LOOP</Dialog.Title>
 
                     </Dialog.Header>
                     <div>
@@ -41,8 +42,8 @@ function Loop() {
             </Dialog.Root>
 
             <Handle type="target" position={Position.Top} id="a" />
-            <Handle type="source" position={Position.Bottom} id="b" />
-            <Handle type="source" position={Position.Right} id="c" />
+            <Handle type="source" position={Position.Bottom} id="afterLoop" />
+            <Handle type="source" position={Position.Right} id="loop" />
         </div>
     );
 }

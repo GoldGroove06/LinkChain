@@ -1,14 +1,15 @@
-function delay(gobalState, nodeData) {
+function delay(gobalState, nodeData, automationObject) {
    let nextConditon;
+    const delayTime = nodeData.data.delayTime;
 
-   
-
-   return {
+    setInterval(() => {
+        return {
        gobalState,
        nodeData,
        nextConditon
    }
-
+    }
+    , delayTime);
 }
 
 export default delay;

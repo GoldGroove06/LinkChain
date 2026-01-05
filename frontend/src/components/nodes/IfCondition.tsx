@@ -31,7 +31,7 @@ function IfCondition() {
 
                 <Dialog.Content>
                     <Dialog.Header>
-                        <Dialog.Title>Set Data</Dialog.Title>
+                        <Dialog.Title>LOOP</Dialog.Title>
                     </Dialog.Header>
                     <div>
                         {dataStore.map((data, index) => (

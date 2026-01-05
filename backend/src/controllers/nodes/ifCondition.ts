@@ -1,4 +1,4 @@
-function ifCondition(gobalState, nodeData) {
+function ifCondition(gobalState, nodeData, automationObject) {
     let nextConditon;
 
     if (nodeData.data.compareType === "and") {
