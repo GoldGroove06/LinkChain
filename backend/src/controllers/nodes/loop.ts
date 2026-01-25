@@ -1,10 +1,15 @@
+import { start } from "repl";
 import { nodeTraversing } from "../automationController";
 async function loop(gobalState, nodeData, automationObject) {
     let nextConditon;
     const nodeId = nodeData.id;
-    console.log(nodeId)
+    // console.log(nodeId)
     const startEdge = automationObject.edges.find((edge) => edge.source === nodeId && edge.sourceHandle === "loop");
-    console.log(nodeData.data.noOfTimes)
+    // console.log(nodeData.data.noOfTimes)
+    // console.log("startEgde target",startEdge.target)
+    //         const nextNode = automationObject.nodes.find((node) => node.id === startEdge.target);
+    // console.log(nextNode)
+    // console.log("exitNOde id", nodeId)
     for(let i = 0; i <  2; i++) {
         console.log("loop",i)
         await nodeTraversing(automationObject, gobalState, startEdge, nodeId);
