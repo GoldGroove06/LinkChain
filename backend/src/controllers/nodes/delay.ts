@@ -1,4 +1,4 @@
-function delay(gobalState, nodeData, automationObject) {
+async function delay(gobalState, nodeData) {
    let nextConditon;
     const delayTime = nodeData.data.delayTime;
 

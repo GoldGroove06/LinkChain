@@ -1,25 +1,29 @@
-import { start } from "repl";
-import { nodeTraversing } from "../automationController";
-async function loop(gobalState, nodeData, automationObject) {
-    let nextConditon;
-    const nodeId = nodeData.id;
-    // console.log(nodeId)
-    const startEdge = automationObject.edges.find((edge) => edge.source === nodeId && edge.sourceHandle === "loop");
-    // console.log(nodeData.data.noOfTimes)
-    // console.log("startEgde target",startEdge.target)
-    //         const nextNode = automationObject.nodes.find((node) => node.id === startEdge.target);
-    // console.log(nextNode)
-    // console.log("exitNOde id", nodeId)
-    for(let i = 0; i <  2; i++) {
-        console.log("loop",i)
-        await nodeTraversing(automationObject, gobalState, startEdge, nodeId);
+async function loop(gobalState, nodeData) {
+    console.log(gobalState)
+    if(!gobalState["loop"]) {
+        gobalState["loop"] = {};
+        gobalState["loop"][nodeData.id] = {
+            noOfTimes: nodeData.data.noOfTimes,
+            currentTimes: 0
+        }
     }
-    
-    return {
-        gobalState,
-        nodeData,
-        nextConditon
+    if (gobalState.loop[nodeData.id].currentTimes < gobalState.loop[nodeData.id].noOfTimes) {
+        gobalState.loop[nodeData.id].currentTimes += 1;
+        console.log("yo", gobalState.loop[nodeData.id].currentTimes)
+        return {
+            gobalState,
+            nodeData,
+            nextConditon: "loop"
+        }
     }
+    else{
+        return {
+            gobalState,
+            nodeData,
+            nextConditon: "afterLoop"
+        }
+    }
+
 
     
 }

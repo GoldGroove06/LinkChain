@@ -77,7 +77,8 @@ function IfCondition() {
 
 
             <Handle type="target" position={Position.Top} id="a" />
-            <Handle type="source" position={Position.Bottom} id="b" />
+            <Handle type="source" position={Position.Bottom} id="true" />
+            <Handle type="source" position={Position.Right} id="false" />
         </div>
     );
 }

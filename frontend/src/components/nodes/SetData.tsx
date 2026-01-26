@@ -8,8 +8,8 @@ function SetData() {
   const nodeData = useNodesData(`${nodeId}`);
   const [dataStore, setDataStore] = useState<[{ name: string, value: string, type: string }]>(nodeData?.data.dataStore || [{ name: "", value: "", type: "" }]);
   const type = ["string", "number", "boolean"];
-
-  UpdateNodeData(nodeId, dataStore);
+  const data = useMemo(() => { return { dataStore } }, [dataStore]);
+  UpdateNodeData(nodeId, data);
 
   function updateDataStore(index: number, toUpdate: string, toUpdateValue: string | number | boolean) {
         const updatedDataStore = [...dataStore];
