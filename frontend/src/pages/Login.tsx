@@ -30,37 +30,36 @@ function Login() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 p-6">
+        <div className="min-h-screen mt-10">
             <div className="max-w-4xl mx-auto">
-                <div className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8 max-w-md mx-auto">
-                    <h1 className="text-4xl font-bold text-white text-center mb-2 bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent">
+                <div className=" p-8 max-w-md mx-auto border-zinc-300 border rounded shadow">
+                    <h1 className=" text-center font-bold">
                         Sign In
                     </h1>
-                    <p className="text-center text-gray-300 mb-6">Welcome back! Sign in to continue.</p>
 
                     <form onSubmit={(e) => { e.preventDefault(); signIn(); }} className="space-y-6">
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                            <label htmlFor="email" className="block  mb-2">Email</label>
                             <input
                                 type="email"
                                 id="email"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-300"
+                                className="w-full px-4 py-3 border-zinc-300 border rounded"
                                 placeholder="Enter your email"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                            <label htmlFor="password" className="block  mb-2">Password</label>
                             <input
                                 type="password"
                                 id="password"
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-300"
+                                className="w-full px-4 py-3 border-zinc-300 border rounded"
                                 placeholder="Enter your password"
                             />
                         </div>
@@ -68,20 +67,20 @@ function Login() {
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className={`w-full px-6 py-3 bg-gradient-to-r from-yellow-400 to-pink-500 text-black font-bold rounded-lg transition-all duration-300 ${isSubmitting ? 'opacity-60 cursor-not-allowed' : 'hover:from-yellow-500 hover:to-pink-600 transform hover:scale-[1.01] hover:shadow-xl'}`}
+                            className={`w-full px-6 py-3 border-zinc-300 border rounded ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}`}
                         >
                             {isSubmitting ? 'Signing in…' : 'Sign In'}
                         </button>
 
                         {submitError && (
-                            <div className="mt-2 text-red-300 bg-red-500/10 border border-red-500/30 rounded p-3 text-sm">
+                            <div className="mt-2  p-3 text-sm ">
                                 {submitError}
                             </div>
                         )}
 
-                        <div className="text-center text-gray-300">
+                        <div className="text-center ">
                             Don't have an account?
-                            <a href="/signup" className="text-yellow-300 hover:text-yellow-200 ml-1 font-medium">
+                            <a href="/signup" className="ml-1 text-blue-500">
                                 Sign up
                             </a>
                         </div>

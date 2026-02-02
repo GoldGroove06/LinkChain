@@ -7,3 +7,17 @@
     --color-quaternary: #0F0E47;
 }
 
+/*
+Source - https://stackoverflow.com/a/76683714
+Posted by Roko C. Buljan, modified by community. See post 'Timeline' for change history
+Retrieved 2026-02-02, License - CC BY-SA 4.0
+*/
+
+#main-text {
+    box-shadow: inset 0px 50px 200px 100px rgb(255, 255, 255);
+  box-sizing: border-box;
+  background:
+   
+    linear-gradient(180deg, #FFF0 0%, #FFFF 100%) 0 0 / 100dvw 100dvh,
+    conic-gradient(from 90deg at 0.5px 0.5px, rgba(71, 71, 71, 0) 90deg, rgb(106, 106, 106) 0) center -1px / 50px 50px;
+}
