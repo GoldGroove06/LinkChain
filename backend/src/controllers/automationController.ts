@@ -1,7 +1,7 @@
 import { Workspace } from "../models/workspace";
 import connectMongo from "../lib/connectMongo";
 import { Automation } from "../models/automation";
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import setData from "./nodes/setData";
 import ifCondition from "./nodes/ifCondition";
 import delay from "./nodes/delay";
@@ -51,7 +51,7 @@ export async function getAutomationTree(req: Request, res: Response) {
 
 let globalState = {};
 
-export async function execEngine(graph, NodeId){
+export async function execEngine(graph, NodeId) {
     console.log("global state", globalState)
     const currentNode = graph.nodeMap.get(NodeId)
     let nCondition
@@ -60,19 +60,22 @@ export async function execEngine(graph, NodeId){
     if (currentNode.type === "manualTrigger") {
         nCondition = "b"
     }
+    if (currentNode.type === "webhook") {
+        nCondition = "b"
+    }
 
     if (currentNode.type === "setData") {
         console.log("yeah")
-        const {nextConditon} = await setData(globalState, currentNode);
+        const { nextConditon } = await setData(globalState, currentNode);
         nCondition = nextConditon
     } else if (currentNode.type === "ifCondition") {
-        const {nextConditon} = await ifCondition(globalState, currentNode);
+        const { nextConditon } = await ifCondition(globalState, currentNode);
         nCondition = nextConditon
     } else if (currentNode.type === "delay") {
-        const {nextConditon} = await delay(globalState, currentNode);
+        const { nextConditon } = await delay(globalState, currentNode);
         nCondition = nextConditon
     } else if (currentNode.type === "loop") {
-        const {nextConditon} = await loop(globalState, currentNode);
+        const { nextConditon } = await loop(globalState, currentNode);
         nCondition = nextConditon
     }
 
@@ -85,21 +88,19 @@ export async function execEngine(graph, NodeId){
             // console.log("nextNode",nextNode)
             await execEngine(graph, nextNode.target)
         }
-        
+
     }
-    
+
 }
 
-export async function runAutomation(req: Request, res: Response) {
-    const id = req.params.id;
-    const startNodeId = req.body.nodeId;
+export async function execEngineStater(id: string, startNodeId: string) {
     await connectMongo();
     const automation = await Automation.findById(id).exec();
 
 
     // console.log("automation tree fetch",automation.nodes, automation.edges);
     let nodeMap
-    let compliedGraph ={}
+    let compliedGraph = {}
     // making a node map or graph 
 
     nodeMap = new Map();
@@ -119,7 +120,7 @@ export async function runAutomation(req: Request, res: Response) {
             nextNode: tempDict
         });
 
-        if (node.type === "manualTrigger"){
+        if (node.type === "manualTrigger") {
             compliedGraph['startNodeId'] = node.id
         }
     }
@@ -130,7 +131,13 @@ export async function runAutomation(req: Request, res: Response) {
     // console.log(nodeMap)
 
     const outputExecEngine = await execEngine(compliedGraph, startNodeId)
+}
+
+export async function runAutomation(req: Request, res: Response) {
+    const id = req.params.id;
+    const startNodeId = req.body.nodeId;
 
 
-    return res.status(200).json({ message: "Automation executed", automation });
+    execEngineStater(id, startNodeId)
+    return res.status(200).json({ message: "Automation executed" });
 }

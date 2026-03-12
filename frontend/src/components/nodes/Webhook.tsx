@@ -1,13 +1,24 @@
 import { Position, Handle, useNodeId, useNodesData } from '@xyflow/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UpdateNodeData from '../UpdateNodeData';
 import { Dialog } from '../Dialog';
+import { useParams } from "react-router";
 
 function Webhook() {
     const nodeId = useNodeId();
+    const { id } = useParams();
     const nodeData = useNodesData(`${nodeId}`);
     const [dataStore, setDataStore] = useState<{ url: string, method: string, path: string }>(nodeData?.data.dataStore || { url: "", method: "GET", path: "" });
     UpdateNodeData(nodeId, dataStore);
+    console.log(nodeData?.data.dataStore);
+    console.log(dataStore);
+    useEffect(() => {
+        console.log(nodeData?.data.dataStore);
+        if (!dataStore.url) {
+            const generatedId = crypto.randomUUID();
+            setDataStore({ ...dataStore, url: `http://localhost:3000/webhook/${id}-${generatedId}` });
+        }
+    }, [])
     return (
         <div className='p-2 px-16 bg-white border border-black rounded-sm'>
             <Dialog.Root>
@@ -23,7 +34,7 @@ function Webhook() {
                     </Dialog.Header>
                     <div>
 
-                        URL: <input type="text" className='border bg-red-700 rounded-md p-2' placeholder='enter the url' value={dataStore.url} onChange={(e) => setDataStore({ ...dataStore, url: e.target.value })} />
+                        URL: <input type="text" className='border bg-red-700 rounded-md p-2' placeholder='enter the url' value={dataStore.url} disabled />
                         Method: <select value={dataStore.method} onChange={(e) => setDataStore({ ...dataStore, method: e.target.value })}>
                             <option value="GET">GET</option>
                             <option value="POST">POST</option>

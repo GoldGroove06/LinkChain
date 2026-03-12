@@ -29,6 +29,7 @@ import Filter from '../components/nodes/Filter';
 import ErrorCatch from '../components/nodes/ErrorCatch';
 import Delay from '../components/nodes/Delay';
 import IfCondition from '../components/nodes/IfCondition';
+import AutomationConsole from '../components/AutomationConsole';
 
 const nodeType = {
   manualTrigger: ManualTrigger,
@@ -174,6 +175,7 @@ function Automation() {
           <Controls />
           <Background />
         </ReactFlow>
+        <AutomationConsole />
       </div>
       <Sidebar />
     </div>

@@ -7,6 +7,7 @@ function Workspace() {
 	const [automation, setAutomation] = useState([]);
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	async function getAutomation() {
 		const response = await fetch('http://localhost:3000/automation/get/'+id , {
@@ -50,6 +51,9 @@ function Workspace() {
 			});
 			const data = await response.json();
 			getAutomation();
+			setName('')
+			setDescription('')
+			setIsMenuOpen(false)
 			console.log(data);
 		} catch (e) {
 		if (e instanceof Error) {
@@ -58,12 +62,12 @@ function Workspace() {
 		}
 	}
 	return(
-		<div>
+		<div className="m-8">
 		<div className="flex flex-row justify-between">
-			<div>Workspace Name</div>
-			<div>New Automation</div>
+			<h1>Automation</h1>
+			<button onClick={() => setIsMenuOpen(true)}>Add Automation</button>
 		</div>
-		<div>
+		<div className={`flex-col gap-4 ${isMenuOpen ? 'flex' : 'hidden'}`}>
 			<input type="text" placeholder="Automation Name" value={name} onChange={(e) => setName(e.target.value)}/>
 			<input type="text" placeholder="automation description" value={description} onChange={(e) => setDescription(e.target.value)}/>
 			<button onClick={handleCreateAutomation}>create</button>

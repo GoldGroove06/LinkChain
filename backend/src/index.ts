@@ -6,6 +6,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import authRoute from "./routes/authRoute";
 import workspaceRoute from "./routes/workspaceRoute";
 import automationRoute from "./routes/automationRoute";
+import webhookRoute from "./routes/webhookRoute";
 
 const secret = process.env.JWT_SECRET ?? "a santa at nasa";
 const app = express();
@@ -55,6 +56,7 @@ app.use("/auth-check", authenticateToken, (_req: Request, res: Response) => {
 app.use("/auth", authRoute);
 app.use("/workspace", authenticateToken, workspaceRoute);
 app.use("/automation", authenticateToken, automationRoute);
+app.use("/webhook", webhookRoute);
 
 
 app.listen(3000, () => {

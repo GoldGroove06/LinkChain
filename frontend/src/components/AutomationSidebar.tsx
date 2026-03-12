@@ -80,14 +80,17 @@ export function Sidebar() {
   return (
     <aside>
       <div className="description">
-        You can drag these nodes to the pane to create new nodes.
+        <p>Drag a node to the canvas</p>
       </div>
+      <div className='flex flex-col gap-2'>
 
+      
       {nodesArray.map((nodeType) => (
-        <DraggableNode className={nodeType} nodeType={nodeType} key={nodeType} onDrop={handleNodeDrop}>
+        <DraggableNode className={nodeType} nodeType={nodeType} key={nodeType} onDrop={handleNodeDrop} className='border border-black items-center justify-center flex'>
           {nodeType}
         </DraggableNode>
       ))}
+      </div>
     </aside>
   );
 }
