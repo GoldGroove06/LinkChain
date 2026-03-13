@@ -54,6 +54,8 @@ interface AutomationContextType {
   updateNodeData: ( nodeId: string, updateData: { [key: string]: any }) => void;
   runAutomation: (nodeId: string) => void
 }
+
+const PlusIcon = () =><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 2.75C8 2.47386 7.77614 2.25 7.5 2.25C7.22386 2.25 7 2.47386 7 2.75V7H2.75C2.47386 7 2.25 7.22386 2.25 7.5C2.25 7.77614 2.47386 8 2.75 8H7V12.25C7 12.5261 7.22386 12.75 7.5 12.75C7.77614 12.75 8 12.5261 8 12.25V8H12.25C12.5261 8 12.75 7.77614 12.75 7.5C12.75 7.22386 12.5261 7 12.25 7H8V2.75Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
 export const AutomationContext = createContext<AutomationContextType>({} as AutomationContextType)
 
 function Automation() {
@@ -61,6 +63,8 @@ function Automation() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const {id} = useParams();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isConsoleOpen, setIsConsoleOpen] = useState(false);
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -161,8 +165,9 @@ function Automation() {
 
   return (
     <AutomationContext.Provider value={{ updateNodeData, runAutomation }}>
-    <div className="flex flex-row h-screen">
-      <div className="reactflow-wrapper w-[80%]">
+    <div className='flex flex-col'>
+    <div className="flex flex-row h-screen relative">
+      <div className="reactflow-wrapper w-full">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -175,9 +180,16 @@ function Automation() {
           <Controls />
           <Background />
         </ReactFlow>
-        <AutomationConsole />
       </div>
-      <Sidebar />
+      <button className={`border boder-black p-2 h-8 bg-gray-200 mt-8 absolute right-4 ${isSidebarOpen ? "hidden" : ""}`} onClick={() => setIsSidebarOpen(true)}><PlusIcon/></button>
+      <button className={`border boder-black p-2 h-8 bg-gray-200 mt-8 absolute right-4 bottom-4 ${isConsoleOpen ? "hidden" : ""}`} onClick={() => setIsConsoleOpen(true)}><PlusIcon/></button>
+      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+    </div>
+    {
+      isConsoleOpen ? 
+    
+        <AutomationConsole isOpen={isConsoleOpen} setIsOpen={setIsConsoleOpen}/> : ""
+}
     </div>
     </AutomationContext.Provider>
   );

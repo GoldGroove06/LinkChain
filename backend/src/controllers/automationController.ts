@@ -64,6 +64,11 @@ export async function execEngine(graph, NodeId) {
         nCondition = "b"
     }
 
+    if (currentNode.type === "console") {
+        nCondition = "b"
+    }
+
+
     if (currentNode.type === "setData") {
         console.log("yeah")
         const { nextConditon } = await setData(globalState, currentNode);
