@@ -51,10 +51,14 @@ export async function getAutomationTree(req: Request, res: Response) {
 
 let globalState = {};
 
+let pValue
+let consoleData = []
+
 export async function execEngine(graph, NodeId) {
     console.log("global state", globalState)
     const currentNode = graph.nodeMap.get(NodeId)
     let nCondition
+    
     // console.log(graph.nodeMap)
     // console.log("currentNode",currentNode)
     if (currentNode.type === "manualTrigger") {
@@ -65,13 +69,17 @@ export async function execEngine(graph, NodeId) {
     }
 
     if (currentNode.type === "console") {
+        consoleData.push(pValue)
+        pValue = ""
+            
+        
         nCondition = "b"
     }
 
 
     if (currentNode.type === "setData") {
-        console.log("yeah")
         const { nextConditon } = await setData(globalState, currentNode);
+        pValue = "setData"
         nCondition = nextConditon
     } else if (currentNode.type === "ifCondition") {
         const { nextConditon } = await ifCondition(globalState, currentNode);
@@ -106,6 +114,7 @@ export async function execEngineStater(id: string, startNodeId: string) {
     // console.log("automation tree fetch",automation.nodes, automation.edges);
     let nodeMap
     let compliedGraph = {}
+    consoleData=[]
     // making a node map or graph 
 
     nodeMap = new Map();
@@ -144,5 +153,5 @@ export async function runAutomation(req: Request, res: Response) {
 
 
     execEngineStater(id, startNodeId)
-    return res.status(200).json({ message: "Automation executed" });
+    return res.status(200).json({ message: "Automation executed", globalState, consoleData });
 }
