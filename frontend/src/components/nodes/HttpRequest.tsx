@@ -1,14 +1,21 @@
 import { Position, Handle, useNodeId, useNodesData } from '@xyflow/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import UpdateNodeData from '../UpdateNodeData';
 import { Dialog } from '../Dialog';
+import { data } from 'react-router';
 
 
 function HttpRequest() {
     const nodeId = useNodeId();
     const nodeData = useNodesData(`${nodeId}`);
-    const [dataStore, setDataStore] = useState<{ url: string, method: string, queryParams: string, body: string, headers: string }>(nodeData?.data.dataStore || { url: "", method: "GET", queryParams: "", body: "", headers: "" });
+    const [dataStore, setDataStore] = useState<{ url: string, method: string, queryParams: Array<{ name: string, value: string }>, body: string, headers: Array<{ name: string, value: string }> }>(nodeData?.data.dataStore || { url: "", method: "GET", queryParams: [{ name: "", value: "" }], body: "", headers: [{ name: "", value: "" }] });
     UpdateNodeData(nodeId, dataStore);
+
+    function updateDataStore(index: number, toUpdate: string, toUpdateValue: string | number | boolean, type: string) {
+        const updatedDataStore = dataStore[`${type}`];
+        updatedDataStore[index][toUpdate] = toUpdateValue;
+        setDataStore({ ...dataStore, [`${type}`]: updatedDataStore });
+    }
     return (
         <div className='p-2 px-16 bg-white border border-black rounded-sm'>
             <Dialog.Root>
@@ -31,10 +38,41 @@ function HttpRequest() {
                             <option value="DELETE">DELETE</option>
                         </select>
                         send Query Params:
-                        <input type='textarea' className='border bg-red-700 rounded-md p-2' value={dataStore.queryParams} onChange={(e) => setDataStore({ ...dataStore, queryParams: e.target.value })} />
+                        {dataStore.queryParams.map((qp, index) => (
+                            <div key={index}>
+                                Name: <input type='text' value={qp.name} onChange={(e) => updateDataStore(index, "name", e.target.value, "queryParams")} />
+                                Value: <input type="text" value={qp.value} onChange={(e) => updateDataStore(index, "value", e.target.value, "queryParams")} />
+                                <button onClick={() => {
+                                    const updatedDataStore = [...dataStore.queryParams];
+                                    updatedDataStore.splice(index, 1);
+                                    setDataStore({ ...dataStore, queryParams: updatedDataStore })
+                                }}
+                                >Delete</button>
+                            </div>
+                        ))}
+                        <button onClick={() => {
+                            setDataStore({ ...dataStore, queryParams: [...dataStore.queryParams, { name: "", value: "" }] })
+                        }}>Add more</button>
+                        {/* <input type='textarea' className='border bg-red-700 rounded-md p-2' value={dataStore.queryParams} onChange={(e) => setDataStore({ ...dataStore, queryParams: e.target.value })} /> */}
+                        <br />
                         send Body: <input type='textarea' className='border bg-red-700 rounded-md p-2' value={dataStore.body} onChange={(e) => setDataStore({ ...dataStore, body: e.target.value })} />
-                        send Headers: <input type='textarea' className='border bg-red-700 rounded-md p-2' value={dataStore.headers} onChange={(e) => setDataStore({ ...dataStore, headers: e.target.value })} />
-
+                        send Headers:
+                        {/* <input type='textarea' className='border bg-red-700 rounded-md p-2' value={dataStore.headers} onChange={(e) => setDataStore({ ...dataStore, headers: e.target.value })} /> */}
+                        {dataStore.headers.map((header, index) => (
+                            <div key={index}>
+                                Name: <input type='text' value={header.name} onChange={(e) => updateDataStore(index, "name", e.target.value, "headers")} />
+                                Value: <input type="text" value={header.value} onChange={(e) => updateDataStore(index, "value", e.target.value, "headers")} />
+                            <button onClick={() => {
+                                    const updatedDataStore = [...dataStore.headers];
+                                    updatedDataStore.splice(index, 1);
+                                    setDataStore({ ...dataStore, headers: updatedDataStore })
+                                }}
+                                >Delete</button>
+                            </div>
+                        ))}
+                        <button onClick={() => {
+                            setDataStore({ ...dataStore, headers: [...dataStore.headers, { name: "", value: "" }] })
+                        }}>Add more</button>
                     </div>
 
                     <Dialog.Footer>

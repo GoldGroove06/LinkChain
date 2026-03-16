@@ -6,6 +6,7 @@ import setData from "./nodes/setData";
 import ifCondition from "./nodes/ifCondition";
 import delay from "./nodes/delay";
 import loop from "./nodes/loop";
+import httpRequest from "./nodes/httpRequest";
 
 export async function getAutomation(req: Request, res: Response) {
     await connectMongo();
@@ -58,24 +59,27 @@ export async function execEngine(graph, NodeId) {
     console.log("global state", globalState)
     const currentNode = graph.nodeMap.get(NodeId)
     let nCondition
-    
+    // console.log("currentNode", currentNode.type)
     // console.log(graph.nodeMap)
     // console.log("currentNode",currentNode)
     if (currentNode.type === "manualTrigger") {
         nCondition = "b"
     }
+
     if (currentNode.type === "webhook") {
         nCondition = "b"
     }
 
+    if (currentNode.type === "httpRequest") {
+        const { nextConditon } = await httpRequest(globalState, currentNode);
+        nCondition = nextConditon
+    }
+    
     if (currentNode.type === "console") {
         consoleData.push(pValue)
-        pValue = ""
-            
-        
+        pValue = ""        
         nCondition = "b"
     }
-
 
     if (currentNode.type === "setData") {
         const { nextConditon } = await setData(globalState, currentNode);
